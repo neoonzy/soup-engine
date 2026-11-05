@@ -1,228 +1,134 @@
 <div align="center">
 
-# 🎞️ Soup Engine <sub><sup>beta</sup></sub>
+# 🎞️ Soup Engine — Canon EOS 5D Classic
 
-### Film looks, in the camera, on a Canon EOS 5D Classic.
+### Simulações de filmes processadas dentro da Canon EOS 5D original (2005).
 
-<br>
+<img src="doc/camera.gif" alt="Seletor de filmes na Canon EOS 5D Classic" width="620">
 
-<img src="doc/camera.gif" alt="scrolling the film stocks on the camera" width="620">
+`beta` · `Canon EOS 5D Classic` · `firmware 1.1.1` · `GPL-2.0`
 
-<br>
-<br>
+[← Voltar às câmeras](../README.md#câmeras-e-versões) · [Revisão técnica desta implementação](REVISAO-TECNICA.pt-BR.md)
 
-`beta` &nbsp;·&nbsp; `GPL v2` &nbsp;·&nbsp; `13 film stocks` &nbsp;·&nbsp; `EOS 5D Classic`
-
-[← All cameras](../README.md#-pick-your-camera)
-
-### 📦 [Download Canon-EOS-5D.zip](https://github.com/jiijii0/soup-engine/releases/download/folders/Canon-EOS-5D.zip)
+**[Baixar pacote da EOS 5D no projeto original](https://github.com/jiijii0/soup-engine/releases/download/folders/Canon-EOS-5D.zip)**
 
 </div>
 
-<br>
+## O que faz?
 
-Press the **trash button** and a list of film stocks fills the back
-screen. Turn the wheel to pick one, press `SET`. Every photo you take
-after that gets a second JPEG saved beside the raw, with the look
-already on it.
+O Soup Engine oferece um seletor de simulações de filmes na tela traseira da Canon EOS 5D Classic. Depois de selecionar um perfil, a câmera pode gerar um segundo JPEG já processado para as novas fotografias, preservando o arquivo RAW original:
 
-```
-IMG_1234.CR2        your raw file, untouched
-IMG_1234.FLM.JPG    the same photo with the look on it
+```text
+IMG_1234.CR2        Fotografia original em RAW
+IMG_1234.FLM.JPG    JPEG produzido pelo Soup Engine
 ```
 
-Your raw files are never modified. Delete the JPEG and the photo is
-exactly as the camera shot it.
+![Exemplo dos treze estilos originais](doc/stocks.jpg)
 
-<br>
+O projeto inclui **13 simulações de filmes**, ainda em desenvolvimento. Os perfis são arquivos de texto `.fs` editáveis.
 
-![all thirteen film looks on one frame](doc/stocks.jpg)
+> [!CAUTION]
+> **Experimental e não oficial.** O projeto modifica o `AUTOEXEC.BIN` utilizado pelo Magic Lantern na 5D Classic. Usar arquivos incompatíveis ou remover o executável com o boot flag ativo pode impedir a câmera de inicializar normalmente. Faça backup dos seus arquivos, use bateria carregada e siga estritamente os requisitos abaixo. A manutenção do RAW não elimina todos os riscos de executar código não oficial.
 
-<div align="center"><sub>
-All thirteen, one frame, straight off the card.
-</sub></div>
+## Compatibilidade e requisitos
 
-<br>
+- **Câmera:** Canon EOS 5D *Classic* — o primeiro modelo, lançado em 2005; não é a 5D Mark II, III ou IV.
+- **Firmware da Canon:** **1.1.1**.
+- **Armazenamento:** cartão **CompactFlash (CF)**.
+- **Pré-requisito:** [Magic Lantern compatível com a 5D Classic](https://builds.magiclantern.fm/5DC.html) instalado e funcionando.
+- **Pacote:** arquivos da pasta [`card/`](card/) da EOS 5D Classic, jamais de outra câmera.
 
-> ⚠️ **Beta.** Unofficial code on a twenty year old camera. It's easy to
-> remove, and it never modifies your raw files.
+O pacote disponibilizado pelo projeto original não foi validado fisicamente durante esta revisão.
 
-> ⚖️ **No warranty.** Like all GPL software this comes with none. You
-> install it at your own risk. See sections 11 and 12 of the
-> [licence](LICENSE).
+## Instalação
 
-> 🎨 **The looks are still being tweaked** and will keep changing. The
-> names are shorthand for the films they're based on, not exact copies.
-> All trademarks belong to their owners.
+1. **Instale e teste o Magic Lantern.** Siga as orientações oficiais da compilação específica para a 5D Classic. Verifique que a câmera inicializa e que o Magic Lantern funciona antes de prosseguir.
+2. **Faça backup do cartão e do `autoexec.bin` original do Magic Lantern.** Guarde uma cópia segura fora do cartão; ela será necessária para restaurar a instalação.
+3. **Baixe o pacote específico da [Canon EOS 5D Classic](https://github.com/jiijii0/soup-engine/releases/download/folders/Canon-EOS-5D.zip)** e confira sua procedência.
+4. **Copie o conteúdo de `card/` para a raiz do CompactFlash.** Substitua `AUTOEXEC.BIN` somente após guardar a cópia original. Mantenha os demais arquivos no mesmo caminho em que aparecem no pacote.
+5. **Insira o cartão e ligue a câmera.** Verifique o comportamento da câmera antes de fotografar trabalhos importantes.
 
-> 📷 **Other cameras.** Community ports for the 7D, 50D, 700D and a
-> half-frame version of the 5D are listed in the
-> [main README](../README.md#-pick-your-camera).
+| Caminho | Função |
+| --- | --- |
+| `AUTOEXEC.BIN` | Executável do Magic Lantern adaptado para iniciar a integração |
+| `SE.BIN` | Payload do Soup Engine |
+| `ML/FILM/` | Perfis de simulação de filmes |
 
-<br>
+> [!IMPORTANT]
+> Na 5D Classic, a integração substitui o executável que oferece o menu original do Magic Lantern. Enquanto o Soup Engine estiver em uso, o menu habitual do Magic Lantern não fica disponível da mesma forma. Para restaurá-lo, use o `autoexec.bin` que você salvou.
 
----
+## Como usar
 
-<br>
+Pressione o botão **lixeira (Trash/Delete)** para abrir o seletor de filmes.
 
-## 📦 Installing
+| Controle | Ação |
+| --- | --- |
+| **Disco de seleção** | Percorre as simulações |
+| **Cima / baixo** | Alterna a origem do processamento |
+| **SET** | Confirma o perfil escolhido |
+| **Lixeira** | Fecha o seletor sem alterar a seleção |
 
-You need a **Canon EOS 5D Classic** (the original 2005 one, firmware
-1.1.1) and a CompactFlash card. It will not work on any other Canon:
-the camera-side code is built for this body's firmware.
+O último perfil escolhido é lembrado entre inicializações pelo arquivo de configuração.
 
-<br>
+### Origem JPEG ou RAW
 
-### 1️⃣ &nbsp; Install Magic Lantern
+**`SOURCE: JPEG` (recomendado):** processa a prévia JPEG presente no CR2, geralmente em cerca de **20 segundos por fotografia**, segundo a documentação do projeto. É a opção mais rápida e a que apresenta suporte mais completo aos efeitos.
 
-> ### 👉 [builds.magiclantern.fm/5DC.html](https://builds.magiclantern.fm/5DC.html)
+**`SOURCE: RAW`:** processa dados do sensor. Pode levar **minutos**, e alguns efeitos de cor não funcionam da mesma forma. Em particular, a documentação original observa limitações do efeito monocromático ACROS nesse modo.
 
-Follow their instructions, then check the camera starts and their menu
-opens before going further. Soup Engine never touches your camera's
-boot flag; their installer does that.
+> [!TIP]
+> Use **Picture Style: Standard, Neutral ou Faithful**. O estilo *Monochrome* da câmera faz com que a origem JPEG seja monocromática, interferindo nos resultados dos perfis coloridos.
 
-<br>
+O texto **`FILM SPEED 50`** no seletor é apenas informativo: ele **não muda o ISO real da câmera**.
 
-### 2️⃣ &nbsp; Back up their `autoexec.bin`
+A câmera exibe o andamento e a posição dos arquivos na fila de processamento, por exemplo `FRAME 2 OF 3`. Você pode continuar fotografando, mas o tempo total depende do cartão, da origem escolhida e da quantidade de imagens.
 
-Copy it off the card somewhere safe. Putting it back is how you
-uninstall.
+## Personalização dos filmes
 
-<br>
+Os perfis ficam em `ML/FILM/`, em arquivos `.fs`. Eles podem ser editados manualmente ou com o editor web **[Soup Stocks](https://jiijii0.github.io/soup-stocks/)**. Para modificar a lista de filmes visíveis, respeite também o `INDEX.TXT` e a capacidade máxima do seletor. Guarde cópias dos seus perfis antes de editá-los.
 
-### 3️⃣ &nbsp; Copy the files to the root of your card
+O Soup Stocks oferece pré-visualização no navegador usando uma versão WebAssembly do motor, segundo a documentação original.
 
-> ### 📦 [Download Canon-EOS-5D.zip](https://github.com/jiijii0/soup-engine/releases/download/folders/Canon-EOS-5D.zip)
+## Remoção e recuperação
 
-Unzip it, then copy everything inside its [`card/`](card) folder to the
-root of your card, replacing `AUTOEXEC.BIN`.
+Para restaurar o Magic Lantern, **recopie o `autoexec.bin` original** que você salvou antes da instalação, substituindo o arquivo adaptado. Na documentação do projeto, também é possível desativar o Soup Engine removendo apenas **`SE.BIN`** e mantendo o executável de inicialização no cartão.
 
-| file | what it is |
-|:--|:--|
-| 📄 `AUTOEXEC.BIN` | replaces Magic Lantern's |
-| ⚙️ `SE.BIN` | the engine |
-| 🎞️ `ML/FILM/` | the film stocks |
+**Se a câmera apresentar comportamento inesperado:** desligue-a; se não responder, remova a bateria com cuidado, retire o CompactFlash e, no computador, remova `SE.BIN` para impedir seu carregamento. Depois, revise os arquivos e recupere a instalação a partir do backup.
 
-<br>
+> [!CAUTION]
+> **Não apague `AUTOEXEC.BIN` com o boot flag ativo.** Nesse estado, a câmera depende desse arquivo para inicializar corretamente. Restaurar a instalação exige manter um `AUTOEXEC.BIN` compatível no cartão.
 
-### ✅ &nbsp; Put the card in and switch the camera on
+## Código-fonte e desenvolvimento
 
-That's it. Nothing to enable, no menu to find.
+O código está em [`src/`](src/), separado em:
 
-> While Soup Engine is installed you won't have Magic Lantern's own
-> menu, since this replaces the file that provides it. Put their
-> `autoexec.bin` back whenever you want it again.
+- **`engine/`:** CR2, JPEG, correções de cor, curvas, grão, perfis e processamento de imagem.
+- **`ml/payload/`:** integração embarcada com a câmera, inicialização, interface, fila e monitoramento.
+- **`host/`:** ferramenta desktop `filmdev`.
+- **`tools/`:** simulador, verificações, scripts de empacotamento e patch.
+- **`stocks/`:** perfis de filme em texto.
 
-<br>
+Para conhecer os alvos de compilação, dependências e testes, leia [`src/README.md`](src/README.md). Exemplos executados a partir de `Canon-EOS-5D/src/`:
 
----
+```sh
+make all          # compila as ferramentas desktop
+make test         # testes básicos do motor
+make test-full    # verificações ampliadas; amostras necessárias
+make simtest      # simulação embarcada; requer arquivos de referência
+make arm          # verifica compilação ARM freestanding
+make payload      # monta os arquivos para o cartão (dependências adicionais)
+```
 
-<br>
+**Atenção:** o repositório não inclui os arquivos CR2 de amostra nem o executável-base original necessário a algumas etapas. Consulte os erros e os pré-requisitos antes de interpretar a falha de um teste como defeito no processamento.
 
-## 📷 Using it
+A [revisão técnica](REVISAO-TECNICA.pt-BR.md) documenta melhorias recomendadas no código, nos testes e na instalação. Nenhuma dessas sugestões foi aplicada automaticamente ao firmware.
 
-Press the **trash button** and the picker fills the screen.
+## Créditos e licença
 
-| button | what it does |
-|:--|:--|
-| 🎛️ **Wheel** | choose a film |
-| ↕️ **Up / Down** | choose where the look comes from |
-| ✅ **`SET`** | pick that film and close |
-| 🗑️ **Trash** | close, changing nothing |
+Projeto original de **[@jiijii0](https://github.com/jiijii0/soup-engine)**, construído sobre o trabalho do [Magic Lantern](https://magiclantern.fm). O Soup Engine não é um projeto oficial da Canon nem do Magic Lantern.
 
-Your choice survives switching the camera off.
-
-Each photo takes about twenty seconds to develop. You can keep shooting
-while it works, and the screen shows `FRAME 2 OF 3` when there's a
-queue.
-
-<br>
-
-> ### ⚠️ Set your Picture Style to Standard, Neutral or Faithful
->
-> On Monochrome every look comes out black and white.
-
-<br>
-
-**`SOURCE: JPEG`** is the default. Use this.
-
-**`SOURCE: RAW`** works from the sensor data instead. It takes minutes
-rather than seconds, some colour adjustments can't be applied, and
-`ACROS` won't be black and white.
-
-`FILM SPEED 50` on the picker is only a label. It does not change your
-camera's ISO.
-
-<br>
+Distribuído sob **GPL v2**, conforme [LICENSE](LICENSE). **Sem garantias.** Nomes comerciais de filmes são referências estéticas e não representam vínculos com seus fabricantes.
 
 ---
 
-<br>
-
-## 🎞️ The films
-
-Thirteen, still under development.
-
-They're small text files in `ML/FILM` on the card, so you can read them,
-change them, or write your own.
-
-<br>
-
-<div align="center">
-
-### 🎨 [Soup Stocks](https://jiijii0.github.io/soup-stocks/)
-
-**A web editor for the film stocks.**
-
-Drop in a photo, move sliders, download a `.fs`, put it on the card.
-
-The preview is this engine's own code compiled to WebAssembly, so it
-matches what the camera writes.<br>Your photo never leaves your browser.
-
-</div>
-
-<br>
-
----
-
-<br>
-
-## 🧹 Removing it
-
-Put Magic Lantern's original `autoexec.bin` back. That's all.
-
-To pause it without uninstalling, delete `SE.BIN`. The camera boots
-normally without it.
-
-> 🆘 **If the camera ever misbehaves:** pull the battery, put the card
-> in a computer, delete `SE.BIN`. Don't delete `AUTOEXEC.BIN` while the
-> boot flag is on, because with the flag set and no `AUTOEXEC.BIN` the
-> camera won't start at all.
-
-<br>
-
----
-
-<br>
-
-## ❤️ Thanks
-
-This wouldn't exist without [Magic Lantern](https://magiclantern.fm).
-
-Soup Engine runs inside their work. Their build for the 5D Classic is
-what lets the camera run any of this, and years of their reverse
-engineering made it possible to understand. They're worth supporting.
-
-Soup Engine isn't their project, so please don't take problems with it
-to them. Open an issue here instead.
-
-<br>
-
-## 📄 Source and licence
-
-All of it is in [`src/`](src). `AUTOEXEC.BIN` is Magic Lantern's program
-with 215 bytes changed, and the script that applies them is there too.
-
-GPL v2. See [LICENSE](LICENSE). Distributed **without any warranty**,
-including the implied warranties of merchantability and fitness for a
-particular purpose (sections 11 and 12).
+*Tradução e organização em português brasileiro feitas no fork [neoonzy/soup-engine](https://github.com/neoonzy/soup-engine); documentação técnica original e autoria preservadas.*
