@@ -2,191 +2,96 @@
 
 # 🎞️ Soup Engine <sub><sup>beta</sup></sub>
 
-### Film looks, in the camera, on old Canon DSLRs.
+### Simulações de filmes diretamente em câmeras Canon DSLR clássicas.
 
-<br>
+<img src="Canon-EOS-5D/doc/camera.gif" alt="Seleção de simulações de filmes na tela da Canon EOS 5D Classic" width="620">
 
-<img src="Canon-EOS-5D/doc/camera.gif" alt="scrolling the film stocks on a 5D Classic" width="620">
-
-<br>
-<br>
-
-`beta` &nbsp;·&nbsp; `GPL v2` &nbsp;·&nbsp; `5 cameras` &nbsp;·&nbsp; `Magic Lantern`
+`beta` · `GPL-2.0` · `5 modelos de câmera` · `Magic Lantern`
 
 </div>
 
-<br>
+## O que é?
 
-Pick a film stock on the back screen. Every photo you take after that
-gets a second JPEG saved beside the raw, with the look already on it,
-developed by the camera itself.
+O **Soup Engine** é um projeto de código aberto que permite aplicar estilos inspirados em filmes fotográficos dentro de câmeras Canon DSLR compatíveis. Depois de escolher um perfil na tela da câmera, as novas fotografias podem gerar um **JPEG adicional, já processado**, ao lado do arquivo RAW.
 
-```
-IMG_1234.CR2        your raw file, untouched
-IMG_1234.FLM.JPG    the same photo with the look on it
+```text
+IMG_1234.CR2        Arquivo RAW original, sem alterações
+IMG_1234.FLM.JPG    JPEG adicional com a simulação de filme
 ```
 
-Your raw files are never modified. Delete the JPEG and the photo is
-exactly as the camera shot it.
+O RAW não é alterado pelo processamento do Soup Engine. O nome dos arquivos e as opções disponíveis variam conforme a câmera; consulte as instruções da versão correspondente.
 
-<sub>File names and options differ a little between cameras. Each
-camera's README has the details.</sub>
+![Comparação de treze simulações de filmes](Canon-EOS-5D/doc/stocks.jpg)
 
-<br>
+> [!WARNING]
+> **Projeto experimental (beta).** O Soup Engine não é um firmware oficial da Canon nem um projeto do Magic Lantern. Instalar ou executar código não oficial em câmeras antigas envolve riscos. Faça backup do cartão, confira o modelo e a versão do firmware e siga as instruções específicas antes de instalar. O software é fornecido **sem garantias**.
 
-![all thirteen film looks on one frame](Canon-EOS-5D/doc/stocks.jpg)
+## Câmeras e versões
 
-<div align="center"><sub>
-The original thirteen, one frame, straight off the card.
-</sub></div>
+Cada adaptação possui código, arquivos para cartão e procedimentos próprios. **Não misture arquivos de câmeras ou versões de firmware diferentes.**
 
-<br>
+| Câmera | Firmware | Adaptação |
+| --- | --- | --- |
+| [Canon EOS 5D Classic](Canon-EOS-5D/) | 1.1.1 | [@jiijii0](https://github.com/jiijii0) |
+| [Canon EOS 5D Classic — Half Frame](Canon-EOS-5D-Half-Frame/) | 1.1.1 | [@mmarco25](https://github.com/mmarco25) |
+| [Canon EOS 7D (original)](Canon-EOS-7D/) | 2.0.3 | [@thebakers-club](https://github.com/thebakers-club) |
+| [Canon EOS 50D](Canon-EOS-50D/) | 1.0.9 | [@rebelt2i](https://github.com/rebelt2i) |
+| [Canon EOS 700D / Rebel T5i / Kiss X7i](Canon-EOS-700D-Rebel-T5i/) | 1.1.5 | [@GitariDev](https://github.com/GitariDev) |
 
----
+São **cinco modelos de câmera** e **seis variantes**, contando a versão Half Frame da 5D.
 
-<br>
+### Comece pela Canon 5D Classic
 
-## 📷 Pick your camera
+Se você usa a primeira Canon EOS 5D (de 2005), consulte o [guia em português da EOS 5D Classic](Canon-EOS-5D/README.md), com requisitos, instalação, uso, remoção e avisos de segurança.
 
-Soup Engine started on the 5D Classic. The community has since ported
-it to other bodies. Each camera has its own folder with everything it
-needs: the source, the card files, and a README with the install steps
-for that body.
+Para entender o estado do código dessa adaptação, veja também a [revisão técnica da EOS 5D](Canon-EOS-5D/REVISAO-TECNICA.pt-BR.md).
 
-**Click your camera** to open its folder. Its page has the photos, the
-instructions, and the download for that camera.
+## Como funciona?
 
-<br>
+1. **Integração com o Magic Lantern.** O suporte à execução na câmera depende de uma versão específica do Magic Lantern. Na 5D Classic, o Soup Engine utiliza um `AUTOEXEC.BIN` adaptado e um payload separado (`SE.BIN`).
+2. **Motor de processamento em C.** O código reúne leitura de CR2, decodificação/codificação JPEG, transformação de cores, curvas e aplicação de estilos. Parte dele é compartilhada por ferramentas de desktop e pela câmera.
+3. **Perfis editáveis.** Os filmes são descritos por arquivos de texto `.fs`, geralmente armazenados em `ML/FILM/` no cartão.
+4. **Processamento local.** Na 5D Classic, o modo padrão usa a prévia JPEG já incluída no arquivo CR2; o modo RAW é mais lento e tem limitações próprias.
 
-| | camera | firmware | by |
-|:--|:--|:--|:--|
-| 📷 | **[Canon EOS 5D Classic](Canon-EOS-5D)** | 1.1.1 | [@jiijii0](https://github.com/jiijii0) |
-| 🎞️ | **[Canon EOS 5D Classic, Half Frame](Canon-EOS-5D-Half-Frame)** | 1.1.1 | [@mmarco25](https://github.com/mmarco25) |
-| 📷 | **[Canon EOS 7D](Canon-EOS-7D)** (original, not Mark II) | 2.0.3 | [@thebakers-club](https://github.com/thebakers-club) |
-| 📷 | **[Canon EOS 50D](Canon-EOS-50D)** | 1.0.9 | [@rebelt2i](https://github.com/rebelt2i) |
-| 📷 | **[Canon EOS 700D / Rebel T5i / Kiss X7i](Canon-EOS-700D-Rebel-T5i)** | 1.1.5 | [@GitariDev](https://github.com/GitariDev) |
+As adaptações mantêm cópias independentes do motor, ajustadas às restrições de cada câmera. Por isso, uma mudança numa pasta não atualiza automaticamente as outras.
 
-<br>
+## Ferramentas complementares
 
-> ⚠️ **Use the folder for your exact camera and firmware.** The
-> camera-side code is built against one body's firmware and one Magic
-> Lantern build. Files from one folder will not work on another camera.
+**[Soup Stocks](https://jiijii0.github.io/soup-stocks/)** — editor web de perfis `.fs`, com pré-visualização baseada no motor compilado para WebAssembly. Segundo o projeto, a imagem usada na edição permanece no navegador.
 
-<br>
+**[SoupDesk](https://github.com/thebakers-club/SoupDesk)** — aplicação de simulações de filmes no desktop (macOS), desenvolvida por [@thebakers-club](https://github.com/thebakers-club).
 
----
+## Estrutura do repositório
 
-<br>
+```text
+Canon-EOS-5D/                 Implementação da 5D Classic
+Canon-EOS-5D-Half-Frame/      Variante Half Frame da 5D
+Canon-EOS-7D/                 Adaptação para a 7D original
+Canon-EOS-50D/                Adaptação para a 50D
+Canon-EOS-700D-Rebel-T5i/     Adaptação para a 700D
+.github/workflows/            Empacotamento das pastas por câmera
+```
 
-## 🍲 How it works
+Cada diretório apresenta suas próprias instruções. A árvore da 5D Classic inclui `card/` (arquivos preparados para o cartão) e `src/` (código-fonte, ferramentas e simulador).
 
-Every port shares the same idea and the same engine:
+## Contribuições e novas adaptações
 
-- **It runs inside [Magic Lantern](https://magiclantern.fm).** You
-  install Magic Lantern for your camera first, then add Soup Engine to
-  the card.
-- **The engine is plain C, integer only.** It does the look, the film
-  stock format, the CR2 reader and the JPEG codec. The same files build
-  for the camera and for the desktop, so the desktop tools can check the
-  camera's output byte for byte.
-- **The films are small text files.** They live in `ML/FILM` on the card
-  as `.fs` files, so you can read them, change them, or write your own.
-- **It develops from the JPEG the camera already made** by default, which
-  takes seconds rather than minutes. The raw stays untouched.
+Novas adaptações são bem-vindas no [projeto original](https://github.com/jiijii0/soup-engine). Para desenvolver suporte a outra câmera, organize-o em um novo diretório `Canon-EOS-<modelo>/`, com código, arquivos necessários e instruções de instalação, uso e remoção. Prefira mudanças restritas à pasta da câmera.
 
-Each port has its own copy of the engine, tuned for that body (the 7D
-has no FPU, the 700D needs 8.3 file names, and so on). A change in one
-folder never affects another camera.
+O projeto original publica pacotes por câmera em suas [versões disponíveis no GitHub](https://github.com/jiijii0/soup-engine/releases). Os links de download referem-se ao **projeto original**; este fork não afirma manter pacotes próprios compilados ou verificados.
 
-<br>
+## Autoria e agradecimentos
 
-> ⚠️ **Beta.** This is unofficial code on cameras that are well over ten
-> years old. It's easy to remove, and it never modifies your raw files.
+O Soup Engine foi criado por [@jiijii0](https://github.com/jiijii0), com adaptações de [@mmarco25](https://github.com/mmarco25), [@thebakers-club](https://github.com/thebakers-club), [@rebelt2i](https://github.com/rebelt2i) e [@GitariDev](https://github.com/GitariDev).
 
-> ⚖️ **No warranty.** Like all GPL software this comes with none. You
-> install it at your own risk. See sections 11 and 12 of the
-> [licence](LICENSE).
+O projeto depende do trabalho de engenharia reversa e desenvolvimento da comunidade do [Magic Lantern](https://magiclantern.fm). O Soup Engine **não é mantido pelo Magic Lantern**: problemas específicos do Soup Engine devem ser relatados no repositório do Soup Engine, informando a câmera e o firmware utilizados.
 
-> 🎨 **The looks are still being tweaked** and will keep changing. The
-> names are shorthand for the films they're based on, not exact copies.
-> All trademarks belong to their owners.
+Os nomes dos filmes são referências estéticas, não reproduções exatas nem indicação de vínculo com seus fabricantes. As marcas pertencem aos seus respectivos titulares.
 
-<br>
+## Licença
+
+Distribuído sob a **GNU GPL v2**. Consulte [LICENSE](LICENSE) e as licenças nas pastas das câmeras. O software é fornecido **sem qualquer garantia**, conforme os termos da licença.
 
 ---
 
-<br>
-
-## 🎨 Tools for the films
-
-<div align="center">
-
-### [Soup Stocks](https://jiijii0.github.io/soup-stocks/)
-
-**A web editor for the film stocks.**
-
-Drop in a photo, move sliders, download a `.fs`, put it on the card.
-
-The preview is this engine's own code compiled to WebAssembly, so it
-matches what the camera writes.<br>Your photo never leaves your browser.
-
-<br>
-
-### [SoupDesk](https://github.com/thebakers-club/SoupDesk)
-
-**The same film stocks on your Mac**, for raws and JPEGs on the desktop.
-<br>By [@thebakers-club](https://github.com/thebakers-club).
-
-</div>
-
-<br>
-
----
-
-<br>
-
-## 🛠️ Porting to another camera
-
-Ports are welcome. Add a new folder named after the camera, for example
-`Canon-EOS-40D/`, with everything that body needs inside it: the
-source, the card files if there are any, and a `README.md` covering
-what you need, how to install, how to use it, and how to remove it.
-Then add a row to the table above and open a pull request.
-
-Each folder gets its own download zip automatically. Link to it from
-your README as
-`https://github.com/jiijii0/soup-engine/releases/download/folders/<folder>.zip`.
-
-Please keep changes inside your folder, so every camera's build stays
-exactly as its author tested it.
-
-<br>
-
----
-
-<br>
-
-## ❤️ Thanks
-
-To everyone who ported it:
-[@rebelt2i](https://github.com/rebelt2i) (50D),
-[@GitariDev](https://github.com/GitariDev) (700D),
-[@thebakers-club](https://github.com/thebakers-club) (7D) and
-[@mmarco25](https://github.com/mmarco25) (5D half frame).
-
-None of this would exist without [Magic Lantern](https://magiclantern.fm).
-Soup Engine runs inside their work. Their builds are what let these
-cameras run any of this, and years of their reverse engineering made it
-possible to understand. They're worth supporting.
-
-Soup Engine isn't their project, so please don't take problems with it
-to them. Open an issue here instead, and say which camera you're using.
-
-<br>
-
-## 📄 Licence
-
-GPL v2. See [LICENSE](LICENSE). Each camera folder carries its own copy.
-Distributed **without any warranty**, including the implied warranties
-of merchantability and fitness for a particular purpose (sections 11
-and 12).
+*Documentação em português brasileiro mantida neste fork. Código, créditos e licenças originais preservados.*
